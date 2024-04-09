@@ -1,17 +1,22 @@
 <resources>
     <string name="app_name">Stori</string>
     <string name="welcome">Welcome to Stori</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
-    <string name="confirm_password">Confirm password</string>
+    <string name="email">Email *</string>
+    <string name="password">Password *</string>
+    <string name="passwords_not_match">Passwords do not match</string>
+    <string name="confirm_password">Confirm password *</string>
     <string name="login_button">LOGIN</string>
     <string name="sign_up_button">SIGN UP</string>
     <string name="sign_up">Sign up</string>
     <string name="sign_in">Log in</string>
     <string name="sign_up_title">Sign up</string>
+    <string name="sign_up_success_text">Your account has been created successfully.</string>
     <string name="change_photo">CHANGE PHOTO</string>
-    <string name="user_name">Name</string>
-    <string name="user_surname">Surname</string>
+    <string name="user_name">Name *</string>
+    <string name="user_surname">Surname *</string>
+    <string name="confirm">Confirm</string>
+    <string name="simple_error_dialog_label">"An error occurred. Please try again later.</string>
+    <string name="simple_error_dialog_title">"Error</string>
     <string name="account">Cuenta:</string>
     <string name="total_balance">Total Balance</string>
     <string name="recent_transactions">RECENT TRANSACTIONS</string>
@@ -27,4 +32,6 @@
     <string name="withdrawal">Withdrawal</string>
     <string name="value">Value</string>
     <string name="toggle_password_visibility_description">Toggle password visibility</string>
+    <string name="error_email_format">Invalid email</string>
+    <string name="invalid_empty_text_field">Can\'t be empty</string>
 </resources>

@@ -25,6 +25,7 @@ fun DepositContent(
             style = MaterialTheme.typography.bodyMedium,
         )
         CommonTextField(
+            value = "",
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next,
@@ -38,6 +39,7 @@ fun DepositContent(
             style = MaterialTheme.typography.bodyMedium
         )
         CommonTextField(
+            value = "",
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Done,
