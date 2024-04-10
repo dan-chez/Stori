@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,21 +28,35 @@ import com.danchez.stori.R
 
 @Composable
 fun CommonTextField(
+    value: String,
+    isError: Boolean = false,
     label: String = "",
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onValueChange: (String) -> Unit,
 ) {
-    var text by remember { mutableStateOf("") }
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
-        value = text,
+        value = value,
         onValueChange = {
-            text = it
             onValueChange(it)
         },
         singleLine = true,
         label = {
             Text(text = label)
+        },
+        isError = isError,
+        supportingText = {
+            if (isError) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.invalid_empty_text_field),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        },
+        trailingIcon = {
+            if (isError)
+                TextFieldErrorIcon()
         },
         shape = RoundedCornerShape(8.dp),
         keyboardOptions = keyboardOptions,
@@ -50,19 +65,33 @@ fun CommonTextField(
 
 @Composable
 fun EmailTextField(
+    value: String,
+    isError: Boolean = false,
     onValueChange: (String) -> Unit,
 ) {
-    var text by remember { mutableStateOf("") }
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
-        value = text,
+        value = value,
         onValueChange = {
-            text = it
             onValueChange(it)
         },
         singleLine = true,
         label = {
             Text(stringResource(id = R.string.email))
+        },
+        isError = isError,
+        supportingText = {
+            if (isError) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.error_email_format),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        },
+        trailingIcon = {
+            if (isError)
+                TextFieldErrorIcon()
         },
         shape = RoundedCornerShape(8.dp),
         keyboardOptions = KeyboardOptions(
@@ -76,23 +105,34 @@ fun EmailTextField(
 
 @Composable
 fun PasswordTextField(
+    value: String,
+    isError: Boolean = false,
     label: String = stringResource(id = R.string.password),
+    supportingText: String = stringResource(id = R.string.invalid_empty_text_field),
     imeAction: ImeAction = ImeAction.Done,
     onValueChange: (String) -> Unit,
 ) {
-    var password by remember { mutableStateOf("") }
     var passwordVisibility by remember { mutableStateOf(false) }
 
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
-        value = password,
+        value = value,
         onValueChange = {
-            password = it
             onValueChange(it)
         },
         singleLine = true,
         label = {
             Text(label)
+        },
+        isError = isError,
+        supportingText = {
+            if (isError) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = supportingText,
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
         },
         visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {

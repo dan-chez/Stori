@@ -16,12 +16,16 @@ import com.danchez.stori.ui.theme.StoriTheme
 @Composable
 fun StoriButton(
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     onClick: () -> Unit,
     text: String,
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier.fillMaxWidth().height(56.dp),
+        enabled = enabled,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(56.dp),
         shape = RoundedCornerShape(8.dp),
     ) {
         Text(
@@ -36,6 +40,10 @@ fun StoriButton(
 @Composable
 private fun StoriButtonPreview() {
     StoriTheme {
-        StoriButton(onClick = { /*TODO*/ }, text = "ON CLICK")
+        StoriButton(
+            enabled = true,
+            onClick = { /*TODO*/ },
+            text = "ON CLICK",
+        )
     }
 }

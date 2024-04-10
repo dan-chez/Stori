@@ -18,6 +18,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
@@ -28,13 +30,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.danchez.stori.R
 import com.danchez.stori.navigation.AppScreens
 import com.danchez.stori.ui.common.EmailTextField
+import com.danchez.stori.ui.common.LoadingDialog
 import com.danchez.stori.ui.common.PasswordTextField
+import com.danchez.stori.ui.common.SimpleErrorAlertDialog
 import com.danchez.stori.ui.common.StoriButton
 import com.danchez.stori.ui.theme.StoriTheme
 import com.danchez.stori.ui.theme.spacing
@@ -42,11 +47,26 @@ import com.danchez.stori.ui.theme.spacing
 @Composable
 fun AuthenticationScreen(
     navController: NavController,
+    viewModel: AuthenticationViewModel = hiltViewModel(),
 ) {
+    val authUIState by viewModel.authState.collectAsState()
+    val localFocusManager = LocalFocusManager.current
+    val clearFocus = { localFocusManager.clearFocus() }
     Scaffold { padding ->
         AuthenticationContent(
             modifier = Modifier.padding(padding),
             navController = navController,
+            email = viewModel.email,
+            onEmailChanged = { viewModel.updateEmail(it) },
+            password = viewModel.password,
+            onPasswordChanged = { viewModel.updatePassword(it) },
+            onLogin = {
+                clearFocus()
+                viewModel.login()
+            },
+            onConfirmationDialogs = { viewModel.hideDialogs() },
+            clearFocus = clearFocus,
+            authUIState = authUIState,
         )
     }
 }
@@ -55,9 +75,16 @@ fun AuthenticationScreen(
 fun AuthenticationContent(
     modifier: Modifier,
     navController: NavController,
+    email: String = "",
+    onEmailChanged: (String) -> Unit = {},
+    password: String = "",
+    onPasswordChanged: (String) -> Unit = {},
+    onLogin: () -> Unit = {},
+    onConfirmationDialogs: () -> Unit = {},
+    clearFocus: () -> Unit = {},
+    authUIState: AuthenticationUIState,
 ) {
     val spacing = MaterialTheme.spacing
-    val localFocusManager = LocalFocusManager.current
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -65,7 +92,7 @@ fun AuthenticationContent(
             .padding(spacing.medium)
             .pointerInput(Unit) {
                 detectTapGestures(onTap = {
-                    localFocusManager.clearFocus()
+                    clearFocus()
                 })
             },
         verticalArrangement = Arrangement.Center,
@@ -89,22 +116,20 @@ fun AuthenticationContent(
         )
         Spacer(modifier = Modifier.height(spacing.medium))
         EmailTextField(
-            onValueChange = {
-                println(it)
-            }
+            value = email,
+            isError = authUIState.showEmailError,
+            onValueChange = onEmailChanged,
         )
         Spacer(modifier = Modifier.height(spacing.small))
         PasswordTextField(
-            onValueChange = {
-                println(it)
-            }
+            value = password,
+            isError = authUIState.showPasswordError,
+            onValueChange = onPasswordChanged,
         )
         Spacer(modifier = Modifier.height(spacing.medium))
         StoriButton(
-            onClick = {
-                navController.popBackStack()
-                navController.navigate(AppScreens.HomeScreen.route)
-            },
+            enabled = authUIState.isButtonEnabled,
+            onClick = onLogin,
             text = stringResource(id = R.string.login_button),
         )
         Spacer(modifier = Modifier.height(spacing.medium))
@@ -121,6 +146,20 @@ fun AuthenticationContent(
             )
 
         }
+        when (authUIState.state) {
+            AuthenticationUIState.UIState.Initialized -> {}
+            AuthenticationUIState.UIState.AuthenticationFailure -> {
+                SimpleErrorAlertDialog(
+                    onConfirmation = onConfirmationDialogs,
+                )
+            }
+
+            AuthenticationUIState.UIState.AuthenticationSuccess -> {
+                navController.navigate(AppScreens.HomeScreen.route)
+            }
+
+            AuthenticationUIState.UIState.Loading -> LoadingDialog()
+        }
     }
 }
 
@@ -129,7 +168,11 @@ fun AuthenticationContent(
 @Composable
 private fun AuthenticationContentPreviewLight() {
     StoriTheme {
-        AuthenticationContent(modifier = Modifier, navController = rememberNavController())
+        AuthenticationContent(
+            modifier = Modifier,
+            navController = rememberNavController(),
+            authUIState = AuthenticationUIState(),
+        )
     }
 }
 
@@ -137,6 +180,10 @@ private fun AuthenticationContentPreviewLight() {
 @Composable
 private fun AuthenticationContentPreviewNight() {
     StoriTheme {
-        AuthenticationContent(modifier = Modifier, navController = rememberNavController())
+        AuthenticationContent(
+            modifier = Modifier,
+            navController = rememberNavController(),
+            authUIState = AuthenticationUIState(),
+        )
     }
 }

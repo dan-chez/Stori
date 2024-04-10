@@ -3,7 +3,9 @@ package com.danchez.stori.ui.common
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -44,5 +46,14 @@ fun WithdrawalIcon(
         modifier = modifier
             .rotate(130f),
         tint = withdrawal_color,
+    )
+}
+
+@Composable
+fun TextFieldErrorIcon() {
+    Icon(
+        imageVector = Icons.Filled.Error,
+        "error",
+        tint = MaterialTheme.colorScheme.error,
     )
 }
