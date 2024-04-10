@@ -1,6 +1,7 @@
 package com.danchez.stori.data.model
 
-data class AccountResponse(
+class AccountResponse(
+    var id: String? = null,
     val accountNumber: String? = null,
     val balance: Long? = null,
 )

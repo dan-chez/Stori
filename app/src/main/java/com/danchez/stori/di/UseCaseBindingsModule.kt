@@ -10,6 +10,8 @@ import com.danchez.stori.domain.usecases.LoginUseCase
 import com.danchez.stori.domain.usecases.LoginUseCaseImpl
 import com.danchez.stori.domain.usecases.SignUpUseCase
 import com.danchez.stori.domain.usecases.SignUpUseCaseImpl
+import com.danchez.stori.domain.usecases.UpdateBalanceUseCase
+import com.danchez.stori.domain.usecases.UpdateBalanceUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -33,4 +35,7 @@ abstract class UseCaseBindingsModule {
 
     @Binds
     internal abstract fun provideGetAccountUseCase(impl: GetAccountUseCaseImpl): GetAccountUseCase
+
+    @Binds
+    internal abstract fun provideUpdateBalanceUseCase(impl: UpdateBalanceUseCaseImpl): UpdateBalanceUseCase
 }

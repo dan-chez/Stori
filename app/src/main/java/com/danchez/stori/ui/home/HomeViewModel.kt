@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.danchez.stori.domain.AccountMediator
 import com.danchez.stori.domain.usecases.GetAccountUseCase
 import com.danchez.stori.domain.usecases.GetTransactionsUseCase
 import com.danchez.stori.ui.home.HomeUIState.UIState
@@ -23,6 +24,7 @@ class HomeViewModel @Inject constructor(
     private val getAccountUseCase: GetAccountUseCase,
     private val transactionsUIMapper: TransactionsModelToUIModelMapper,
     private val accountUIMapper: AccountModelToUIModelMapper,
+    private val accountMediator: AccountMediator,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUIState())
@@ -68,6 +70,7 @@ class HomeViewModel @Inject constructor(
     private suspend fun getAccount() {
         getAccountUseCase()
             .onSuccess { accountModel ->
+                accountMediator.account = accountModel
                 account = accountUIMapper.map(accountModel)
                 _uiState.update { currentState ->
                     currentState.copy(
