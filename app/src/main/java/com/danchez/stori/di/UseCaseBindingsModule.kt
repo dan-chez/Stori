@@ -2,6 +2,8 @@ package com.danchez.stori.di
 
 import com.danchez.stori.domain.usecases.CreateTransactionUseCase
 import com.danchez.stori.domain.usecases.CreateTransactionUseCaseImpl
+import com.danchez.stori.domain.usecases.GetAccountUseCase
+import com.danchez.stori.domain.usecases.GetAccountUseCaseImpl
 import com.danchez.stori.domain.usecases.GetTransactionsUseCase
 import com.danchez.stori.domain.usecases.GetTransactionsUseCaseImpl
 import com.danchez.stori.domain.usecases.LoginUseCase
@@ -28,4 +30,7 @@ abstract class UseCaseBindingsModule {
 
     @Binds
     internal abstract fun provideGetTransactionUseCase(impl: GetTransactionsUseCaseImpl): GetTransactionsUseCase
+
+    @Binds
+    internal abstract fun provideGetAccountUseCase(impl: GetAccountUseCaseImpl): GetAccountUseCase
 }

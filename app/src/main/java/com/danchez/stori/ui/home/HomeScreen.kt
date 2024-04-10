@@ -60,7 +60,7 @@ fun HomeScreen(
             Lifecycle.State.CREATED -> {}
             Lifecycle.State.STARTED -> {}
             Lifecycle.State.RESUMED -> {
-                viewModel.getTransactions()
+                viewModel.getHomeData()
             }
         }
     }
@@ -70,6 +70,7 @@ fun HomeScreen(
             modifier = Modifier.padding(padding),
             navController = navController,
             transactions = viewModel.transactions,
+            account = viewModel.account,
             onConfirmationDialogs = { viewModel.onConfirmationDialogs() },
             onTransactionTap = { viewModel.onTransactionTap(it) },
             uiState = uiState,
@@ -83,14 +84,13 @@ private fun HomeContent(
     modifier: Modifier,
     navController: NavController,
     transactions: List<TransactionUIModel> = emptyList(),
+    account: AccountUIModel,
     onTransactionTap: (TransactionUIModel) -> Unit = {},
     onConfirmationDialogs: () -> Unit = {},
     uiState: HomeUIState,
 ) {
     val spacing = MaterialTheme.spacing
 
-    // FIXME Remove mock data
-    val accountModel = AccountModel(account = "1234 5678 9012", totalBalance = "\$2.000.000,00")
     ConstraintLayout(
         modifier = modifier
             .fillMaxSize()
@@ -107,7 +107,7 @@ private fun HomeContent(
                     width = Dimension.fillToConstraints
                 }
                 .wrapContentSize(),
-            model = accountModel,
+            model = account,
         )
         Text(
             modifier = Modifier
@@ -216,6 +216,7 @@ private fun HomeContentPreview() {
         HomeContent(
             modifier = Modifier,
             navController = rememberNavController(),
+            account = AccountUIModel.initial(),
             uiState = HomeUIState(),
         )
     }
@@ -228,6 +229,7 @@ private fun HomeContentPreviewNight() {
         HomeContent(
             modifier = Modifier,
             navController = rememberNavController(),
+            account = AccountUIModel.initial(),
             uiState = HomeUIState(),
         )
     }
