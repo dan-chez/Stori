@@ -45,5 +45,5 @@ val dark_onBackground = Color(0xFFe1e3e3)
 val dark_surface = Color(0xFF191c1d)
 val dark_onSurface = Color(0xFFe1e3e3)
 
-val deposit_color = Color(0xFF059753)
+val income_color = Color(0xFF059753)
 val withdrawal_color = Color(0xFFba1a1a)

@@ -17,7 +17,7 @@ import com.danchez.stori.ui.common.CommonTextField
 import com.danchez.stori.ui.theme.Spacing
 
 @Composable
-fun DepositContentComposable(
+fun IncomeContentComposable(
     spacing: Spacing,
     value: String = "",
     onValueChange: (String) -> Unit = {},
@@ -27,7 +27,7 @@ fun DepositContentComposable(
 ) {
     Column {
         Text(
-            text = stringResource(id = R.string.enter_value_to_deposit),
+            text = stringResource(id = R.string.income_value),
             style = MaterialTheme.typography.bodyMedium,
         )
         CommonTextField(

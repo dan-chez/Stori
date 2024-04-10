@@ -35,11 +35,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.danchez.stori.R
+import com.danchez.stori.domain.model.TransactionType
 import com.danchez.stori.ui.common.LoadingDialog
 import com.danchez.stori.ui.common.SimpleAlertDialog
 import com.danchez.stori.ui.common.SimpleErrorAlertDialog
 import com.danchez.stori.ui.common.StoriButton
-import com.danchez.stori.ui.home.TransactionType
 import com.danchez.stori.ui.theme.StoriTheme
 import com.danchez.stori.ui.theme.spacing
 import com.danchez.stori.utils.rememberImeState
@@ -137,8 +137,8 @@ private fun CreateTransactionContent(
         )
         Spacer(modifier = Modifier.height(spacing.medium))
         when (transactionTypeSelected) {
-            TransactionType.DEPOSIT -> {
-                DepositContentComposable(
+            TransactionType.INCOME -> {
+                IncomeContentComposable(
                     spacing = spacing,
                     value = value,
                     onValueChange = onValueChange,
@@ -206,7 +206,7 @@ private fun CreateTransactionContentPreview() {
         CreateTransactionContent(
             modifier = Modifier,
             navController = rememberNavController(),
-            transactionTypeSelected = TransactionType.DEPOSIT,
+            transactionTypeSelected = TransactionType.INCOME,
             uiState = CreateTransactionUIState(),
         )
     }
@@ -219,7 +219,7 @@ private fun CreateTransactionContentPreviewNight() {
         CreateTransactionContent(
             modifier = Modifier,
             navController = rememberNavController(),
-            transactionTypeSelected = TransactionType.DEPOSIT,
+            transactionTypeSelected = TransactionType.INCOME,
             uiState = CreateTransactionUIState(),
         )
     }

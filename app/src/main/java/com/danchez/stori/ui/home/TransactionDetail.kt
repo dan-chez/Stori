@@ -21,44 +21,39 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.danchez.stori.R
-import com.danchez.stori.ui.common.DepositIcon
+import com.danchez.stori.ui.common.IncomeIcon
 import com.danchez.stori.ui.common.WithdrawalIcon
 import com.danchez.stori.ui.theme.StoriTheme
 import com.danchez.stori.ui.theme.spacing
-import com.danchez.stori.utils.extensions.formatDateToString
-import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TransactionDetail(
     sheetState: SheetState,
+    transactionUIModel: TransactionUIModel,
     onDismiss: () -> Unit,
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState
     ) {
-        TransactionDetailContent()
+        TransactionDetailContent(
+            transactionUIModel = transactionUIModel,
+        )
     }
 }
 
 @Composable
 private fun TransactionDetailContent(
     modifier: Modifier = Modifier,
+    transactionUIModel: TransactionUIModel,
 ) {
     val spacing = MaterialTheme.spacing
-    // FIXME Remove this model
-    val model = TransactionModel(
-        Date(),
-        "$500.000,00",
-        "Apartment fee",
-        TransactionType.WITHDRAWAL,
-    )
     Column(
         modifier = modifier
             .padding(
                 start = spacing.large,
-                end = spacing.medium,
+                end = spacing.large,
                 bottom = spacing.extraLarge,
             )
             .fillMaxWidth(),
@@ -79,14 +74,13 @@ private fun TransactionDetailContent(
                 text = stringResource(id = R.string.value),
             )
             Spacer(modifier = Modifier.width(spacing.large))
-            if (model.type == TransactionType.DEPOSIT) {
-                DepositIcon()
-            } else {
-                WithdrawalIcon()
+            when (transactionUIModel) {
+                is WithdrawalUIModel -> WithdrawalIcon()
+                is IncomeUIModel -> IncomeIcon()
             }
         }
         Text(
-            text = model.value,
+            text = transactionUIModel.value,
             fontWeight = FontWeight.Bold,
         )
         Spacer(modifier = Modifier.height(spacing.medium))
@@ -94,13 +88,15 @@ private fun TransactionDetailContent(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            Column {
-                Text(
-                    text = stringResource(id = R.string.description),
-                )
-                Text(
-                    text = model.description,
-                )
+            if (!transactionUIModel.description.isNullOrBlank()) {
+                Column {
+                    Text(
+                        text = stringResource(id = R.string.description),
+                    )
+                    Text(
+                        text = transactionUIModel.description!!,
+                    )
+                }
             }
             Column(
                 horizontalAlignment = Alignment.End,
@@ -109,7 +105,7 @@ private fun TransactionDetailContent(
                     text = stringResource(id = R.string.date),
                 )
                 Text(
-                    text = model.date.formatDateToString(),
+                    text = transactionUIModel.date,
                 )
             }
         }
@@ -120,6 +116,13 @@ private fun TransactionDetailContent(
 @Composable
 private fun TransactionDetailContentPreview() {
     StoriTheme {
-        TransactionDetailContent()
+        TransactionDetailContent(
+            transactionUIModel = WithdrawalUIModel(
+                "",
+                "$500.000,00",
+                "Apartment fee",
+                ""
+            )
+        )
     }
 }
