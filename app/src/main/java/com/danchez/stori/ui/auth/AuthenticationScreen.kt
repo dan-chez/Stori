@@ -50,6 +50,8 @@ fun AuthenticationScreen(
     viewModel: AuthenticationViewModel = hiltViewModel(),
 ) {
     val authUIState by viewModel.authState.collectAsState()
+    val localFocusManager = LocalFocusManager.current
+    val clearFocus = { localFocusManager.clearFocus() }
     Scaffold { padding ->
         AuthenticationContent(
             modifier = Modifier.padding(padding),
@@ -58,8 +60,12 @@ fun AuthenticationScreen(
             onEmailChanged = { viewModel.updateEmail(it) },
             password = viewModel.password,
             onPasswordChanged = { viewModel.updatePassword(it) },
-            onLogin = { viewModel.login() },
+            onLogin = {
+                clearFocus()
+                viewModel.login()
+            },
             onConfirmationDialogs = { viewModel.hideDialogs() },
+            clearFocus = clearFocus,
             authUIState = authUIState,
         )
     }
@@ -75,10 +81,10 @@ fun AuthenticationContent(
     onPasswordChanged: (String) -> Unit = {},
     onLogin: () -> Unit = {},
     onConfirmationDialogs: () -> Unit = {},
+    clearFocus: () -> Unit = {},
     authUIState: AuthenticationUIState,
 ) {
     val spacing = MaterialTheme.spacing
-    val localFocusManager = LocalFocusManager.current
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -86,7 +92,7 @@ fun AuthenticationContent(
             .padding(spacing.medium)
             .pointerInput(Unit) {
                 detectTapGestures(onTap = {
-                    localFocusManager.clearFocus()
+                    clearFocus()
                 })
             },
         verticalArrangement = Arrangement.Center,
