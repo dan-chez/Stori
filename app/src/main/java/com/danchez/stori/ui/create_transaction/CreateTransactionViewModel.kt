@@ -5,7 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.danchez.stori.domain.AccountMediator
+import com.danchez.stori.domain.model.IncomeModel
+import com.danchez.stori.domain.model.TransactionModel
 import com.danchez.stori.domain.model.TransactionType
+import com.danchez.stori.domain.model.WithdrawalModel
 import com.danchez.stori.domain.usecases.CreateTransactionUseCase
 import com.danchez.stori.ui.create_transaction.CreateTransactionUIState.UIState
 import com.danchez.stori.utils.TransformedTextUtils
@@ -20,6 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateTransactionViewModel @Inject constructor(
     private val createTransactionUseCase: CreateTransactionUseCase,
+    private val accountMediator: AccountMediator,
 ) : ViewModel() {
 
     private val _uIState = MutableStateFlow(CreateTransactionUIState())
@@ -41,7 +46,7 @@ class CreateTransactionViewModel @Inject constructor(
         val data = createData()
         viewModelScope.launch {
             showLoading()
-            createTransactionUseCase(data = data)
+            createTransactionUseCase(data = data, account = accountMediator.account)
                 .onSuccess {
                     _uIState.update { currentState ->
                         currentState.copy(
@@ -120,16 +125,27 @@ class CreateTransactionViewModel @Inject constructor(
         }
     }
 
-    private fun createData(): Map<String, Any> {
-        val data = mutableMapOf<String, Any>()
+    private fun createData(): TransactionModel {
         val currentTimestamp = System.currentTimeMillis()
-        data["value"] = value.toInt()
-        data["transactionType"] = transactionTypeSelected.name
-        data["timestamp"] = currentTimestamp
-        if (transactionTypeSelected == TransactionType.WITHDRAWAL) {
-            data["destinationAccount"] = destinationAccount
+        return when (transactionTypeSelected) {
+            TransactionType.WITHDRAWAL -> {
+                WithdrawalModel(
+                    value = value,
+                    description = description,
+                    timestamp = currentTimestamp,
+                    transactionType = transactionTypeSelected,
+                    destinationAccount = destinationAccount,
+                )
+            }
+
+            TransactionType.INCOME -> {
+                IncomeModel(
+                    value = value,
+                    description = description,
+                    timestamp = currentTimestamp,
+                    transactionType = transactionTypeSelected,
+                )
+            }
         }
-        data["description"] = description
-        return data
     }
 }

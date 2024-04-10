@@ -3,6 +3,7 @@ package com.danchez.stori.domain.model
 import kotlin.random.Random
 
 data class AccountModel(
+    val id: String,
     val accountNumber: String,
     val balance: Long,
 ) {

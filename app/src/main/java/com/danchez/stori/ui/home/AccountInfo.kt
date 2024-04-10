@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.danchez.stori.R
 import com.danchez.stori.ui.home.preview.AccountInfoDataProvider
@@ -28,7 +27,7 @@ import com.danchez.stori.ui.theme.StoriTheme
 fun AccountInfo(
     spacing: Spacing,
     modifier: Modifier = Modifier,
-    model: AccountModel,
+    model: AccountUIModel,
 ) {
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
@@ -66,15 +65,21 @@ fun AccountInfo(
     }
 }
 
-data class AccountModel(
+data class AccountUIModel(
     val account: String,
     val totalBalance: String,
-)
+) {
+    companion object {
+        fun initial(): AccountUIModel {
+            return  AccountUIModel("", "0")
+        }
+    }
+}
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 private fun AccountInfoPreview(
-    @PreviewParameter(AccountInfoDataProvider::class) model: AccountModel,
+    @PreviewParameter(AccountInfoDataProvider::class) model: AccountUIModel,
 ) {
     StoriTheme {
         AccountInfo(spacing = Spacing(), model = model)
@@ -84,7 +89,7 @@ private fun AccountInfoPreview(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun AccountInfoPreviewNight(
-    @PreviewParameter(AccountInfoDataProvider::class) model: AccountModel,
+    @PreviewParameter(AccountInfoDataProvider::class) model: AccountUIModel,
 ) {
     StoriTheme {
         AccountInfo(spacing = Spacing(), model = model)

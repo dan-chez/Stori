@@ -5,9 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.danchez.stori.domain.AccountMediator
+import com.danchez.stori.domain.usecases.GetAccountUseCase
 import com.danchez.stori.domain.usecases.GetTransactionsUseCase
 import com.danchez.stori.ui.home.HomeUIState.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,7 +21,10 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getTransactionsUseCase: GetTransactionsUseCase,
-    private val uiMapper: TransactionsModelToUIModelMapper,
+    private val getAccountUseCase: GetAccountUseCase,
+    private val transactionsUIMapper: TransactionsModelToUIModelMapper,
+    private val accountUIMapper: AccountModelToUIModelMapper,
+    private val accountMediator: AccountMediator,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUIState())
@@ -27,26 +33,58 @@ class HomeViewModel @Inject constructor(
     var transactions by mutableStateOf<List<TransactionUIModel>>(emptyList())
         private set
 
-    fun getTransactions() {
+    var account by mutableStateOf(AccountUIModel.initial())
+        private set
+
+    fun getHomeData() {
+        showLoading()
         viewModelScope.launch {
-            showLoading()
-            getTransactionsUseCase()
-                .onSuccess { transactionsModel ->
-                    transactions = uiMapper.map(transactionsModel)
-                    _uiState.update { currentState ->
-                        currentState.copy(
-                            state = UIState.Success,
-                        )
-                    }
-                }
-                .onFailure {
-                    _uiState.update { currentState ->
-                        currentState.copy(
-                            state = UIState.Failure,
-                        )
-                    }
-                }
+            val getTransactions = async { getTransactions() }
+            val getAccount = async { getAccount() }
+
+            getTransactions.await()
+            getAccount.await()
+
         }
+    }
+
+    private suspend fun getTransactions() {
+        getTransactionsUseCase()
+            .onSuccess { transactionsModel ->
+                transactions = transactionsUIMapper.map(transactionsModel)
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        state = UIState.Success,
+                    )
+                }
+            }
+            .onFailure {
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        state = UIState.Failure,
+                    )
+                }
+            }
+    }
+
+    private suspend fun getAccount() {
+        getAccountUseCase()
+            .onSuccess { accountModel ->
+                accountMediator.account = accountModel
+                account = accountUIMapper.map(accountModel)
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        state = UIState.Success,
+                    )
+                }
+            }
+            .onFailure {
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        state = UIState.Failure,
+                    )
+                }
+            }
     }
 
     fun onTransactionTap(selectedTransaction: TransactionUIModel) {

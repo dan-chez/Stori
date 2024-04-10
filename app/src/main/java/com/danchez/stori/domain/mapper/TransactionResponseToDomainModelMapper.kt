@@ -25,6 +25,7 @@ class TransactionResponseToDomainModelMapperImpl @Inject constructor() : Transac
                         value = transaction.value.toString(),
                         description = transaction.description,
                         timestamp = transaction.timestamp,
+                        transactionType = transactionType,
                         destinationAccount = transaction.destinationAccount ?: "",
                     )
                 }
@@ -34,6 +35,7 @@ class TransactionResponseToDomainModelMapperImpl @Inject constructor() : Transac
                         value = transaction.value.toString(),
                         description = transaction.description,
                         timestamp = transaction.timestamp,
+                        transactionType = transactionType,
                     )
                 }
             }

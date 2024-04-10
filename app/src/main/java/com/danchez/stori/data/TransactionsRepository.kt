@@ -11,7 +11,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 interface TransactionsRepository {
-    suspend fun createTransaction(data: Map<String, Any>): Result<Unit>
+    suspend fun createTransaction(data: Map<String, Any?>): Result<Unit>
 
     suspend fun getTransactions(): Result<List<TransactionModel>>
 }
@@ -21,7 +21,7 @@ class TransactionsRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val mapper: TransactionResponseToDomainModelMapper,
 ) : TransactionsRepository {
-    override suspend fun createTransaction(data: Map<String, Any>): Result<Unit> {
+    override suspend fun createTransaction(data: Map<String, Any?>): Result<Unit> {
         return suspendCancellableCoroutine { continuation ->
             try {
                 val currentUser = authRepository.currentUser

@@ -89,7 +89,9 @@ private fun TransactionDetailContent(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             if (!transactionUIModel.description.isNullOrBlank()) {
-                Column {
+                Column(
+                    modifier = Modifier.weight(weight = 1f),
+                ) {
                     Text(
                         text = stringResource(id = R.string.description),
                     )
@@ -99,6 +101,7 @@ private fun TransactionDetailContent(
                 }
             }
             Column(
+                modifier = Modifier.weight(weight = 0.5f).align(alignment = Alignment.Bottom),
                 horizontalAlignment = Alignment.End,
             ) {
                 Text(
