@@ -1,5 +1,7 @@
 package com.danchez.stori.di
 
+import com.danchez.stori.data.AccountRepository
+import com.danchez.stori.data.AccountRepositoryImpl
 import com.danchez.stori.data.AuthRepository
 import com.danchez.stori.data.AuthRepositoryImpl
 import com.danchez.stori.data.TransactionsRepository
@@ -18,4 +20,7 @@ class RepositoryModule {
 
     @Provides
     fun provideTransactionsRepository(impl: TransactionsRepositoryImpl): TransactionsRepository = impl
+
+    @Provides
+    fun provideAccountRepository(impl: AccountRepositoryImpl): AccountRepository = impl
 }
