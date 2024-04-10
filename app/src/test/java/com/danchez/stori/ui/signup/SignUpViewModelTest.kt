@@ -33,7 +33,7 @@ class SignUpViewModelTest {
         val testDispatcher = UnconfinedTestDispatcher(testScheduler)
         Dispatchers.setMain(testDispatcher)
 
-        coEvery { signUpUseCase(any(), any(), any()) } returns Result.success(Unit)
+        coEvery { signUpUseCase(any()) } returns Result.success(Unit)
 
         signUpViewModel.signUp()
 
@@ -44,7 +44,7 @@ class SignUpViewModelTest {
     fun `SignUp failure`() = runTest {
         val mockError = Exception("Sign up failed")
 
-        coEvery { signUpUseCase(any(), any(), any()) } returns Result.failure(mockError)
+        coEvery { signUpUseCase(any()) } returns Result.failure(mockError)
 
         signUpViewModel.signUp()
 

@@ -19,19 +19,19 @@ class StringExtensionsTest {
     }
 
     @Test
-    fun `empty string`() {
+    fun `email empty string`() {
         val emptyEmail = ""
         assertFalse(emptyEmail.isEmailFormatValid())
     }
 
     @Test
-    fun `null string`() {
+    fun `email null string`() {
         val nullEmail: String? = null
         assertFalse(nullEmail.isEmailFormatValid())
     }
 
     @Test
-    fun `random string`() {
+    fun `email random string`() {
         val randomString = "This is not an email address"
         assertFalse(randomString.isEmailFormatValid())
     }
