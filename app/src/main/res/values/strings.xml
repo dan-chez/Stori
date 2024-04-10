@@ -34,4 +34,5 @@
     <string name="toggle_password_visibility_description">Toggle password visibility</string>
     <string name="error_email_format">Invalid email</string>
     <string name="invalid_empty_text_field">Can\'t be empty</string>
+    <string name="invalid_password_text_field">Password must be at least 6 characters long</string>
 </resources>
