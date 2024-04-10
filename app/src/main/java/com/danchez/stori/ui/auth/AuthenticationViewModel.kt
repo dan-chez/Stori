@@ -93,7 +93,7 @@ class AuthenticationViewModel @Inject constructor(
         val emailValid = email.isEmailFormatValid()
         _authState.update { currentState ->
             currentState.copy(
-                isButtonEnabled = emailValid && password.isNotBlank()
+                isButtonEnabled = emailValid && password.length >= 6
             )
         }
     }
