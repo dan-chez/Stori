@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.danchez.stori.data.AuthRepository
 import com.danchez.stori.domain.AccountMediator
 import com.danchez.stori.domain.usecases.GetAccountUseCase
 import com.danchez.stori.domain.usecases.GetTransactionsUseCase
@@ -25,6 +26,7 @@ class HomeViewModel @Inject constructor(
     private val transactionsUIMapper: TransactionsModelToUIModelMapper,
     private val accountUIMapper: AccountModelToUIModelMapper,
     private val accountMediator: AccountMediator,
+    private val authRepository: AuthRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUIState())
@@ -39,6 +41,14 @@ class HomeViewModel @Inject constructor(
     fun getHomeData() {
         showLoading()
         viewModelScope.launch {
+            authRepository.currentUser?.let {
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        displayName = it.displayName ?: "",
+                        photoUrl = it.photoUrl
+                    )
+                }
+            }
             val getTransactions = async { getTransactions() }
             val getAccount = async { getAccount() }
 
@@ -85,6 +95,15 @@ class HomeViewModel @Inject constructor(
                     )
                 }
             }
+    }
+
+    fun onLogoutTap() {
+        authRepository.logout()
+        _uiState.update { currentState ->
+            currentState.copy(
+                state = UIState.Logout,
+            )
+        }
     }
 
     fun onTransactionTap(selectedTransaction: TransactionUIModel) {

@@ -3,18 +3,28 @@ package com.danchez.stori.ui.home
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
@@ -22,8 +32,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,15 +48,19 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.danchez.stori.R
 import com.danchez.stori.navigation.AppScreens
 import com.danchez.stori.ui.common.LoadingDialog
 import com.danchez.stori.ui.common.SimpleErrorAlertDialog
 import com.danchez.stori.ui.common.StoriButton
+import com.danchez.stori.ui.signup.ProfilePicSection
 import com.danchez.stori.ui.theme.StoriTheme
 import com.danchez.stori.ui.theme.spacing
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navController: NavController,
@@ -65,7 +82,45 @@ fun HomeScreen(
         }
     }
 
-    Scaffold { padding ->
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(uiState.photoUrl)
+                                .placeholder(R.drawable.profile_icon)
+                                .error(R.drawable.profile_icon)
+                                .build(),
+                            contentDescription = "",
+                            modifier = Modifier
+                                .size(32.dp)
+                                .clip(CircleShape)
+                                .border(
+                                    width = 1.dp,
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    shape = CircleShape,
+                                ),
+                            contentScale = ContentScale.Crop,
+                        )
+                        Spacer(modifier = Modifier.width(width = 8.dp))
+                        Text(text = uiState.displayName)
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { viewModel.onLogoutTap() }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.Logout,
+                            contentDescription = null,
+                        )
+                    }
+                }
+            )
+        }
+    ) { padding ->
         HomeContent(
             modifier = Modifier.padding(padding),
             navController = navController,
@@ -206,6 +261,10 @@ private fun HomeContent(
         }
 
         HomeUIState.UIState.Success -> {}
+        HomeUIState.UIState.Logout -> {
+            navController.popBackStack()
+            navController.navigate(route = AppScreens.AuthenticationScreen.route)
+        }
     }
 }
 
