@@ -9,7 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import com.danchez.stori.ui.theme.deposit_color
+import com.danchez.stori.ui.theme.income_color
 import com.danchez.stori.ui.theme.withdrawal_color
 
 @Composable
@@ -24,7 +24,7 @@ fun ChevronRightIcon(
 }
 
 @Composable
-fun DepositIcon(
+fun IncomeIcon(
     modifier: Modifier = Modifier,
 ) {
     Icon(
@@ -32,7 +32,7 @@ fun DepositIcon(
         contentDescription = null,
         modifier = modifier
             .rotate(-30f),
-        tint = deposit_color,
+        tint = income_color,
     )
 }
 

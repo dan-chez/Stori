@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.danchez.stori.domain.model.TransactionType
 import com.danchez.stori.domain.usecases.CreateTransactionUseCase
-import com.danchez.stori.ui.home.TransactionType
 import com.danchez.stori.ui.create_transaction.CreateTransactionUIState.UIState
 import com.danchez.stori.utils.TransformedTextUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -122,7 +122,7 @@ class CreateTransactionViewModel @Inject constructor(
 
     private fun createData(): Map<String, Any> {
         val data = mutableMapOf<String, Any>()
-        val currentTimestamp = System.currentTimeMillis().toString()
+        val currentTimestamp = System.currentTimeMillis()
         data["value"] = value.toInt()
         data["transactionType"] = transactionTypeSelected.name
         data["timestamp"] = currentTimestamp

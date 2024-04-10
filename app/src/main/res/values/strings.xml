@@ -22,13 +22,14 @@
     <string name="recent_transactions">RECENT TRANSACTIONS</string>
     <string name="make_transaction">MAKE TRANSACTION</string>
     <string name="enter_value_to_withdraw">Enter the value to withdraw *</string>
-    <string name="enter_value_to_deposit">Enter the value to deposit *</string>
+    <string name="income_value">Income value *</string>
     <string name="enter_destination_account_to_transfer">Enter the destination account number *</string>
     <string name="description">Description</string>
     <string name="date">Date</string>
     <string name="transfer_from_your_account">Transfer from your account</string>
     <string name="transaction_details">Transaction details</string>
-    <string name="deposit">Deposit</string>
+    <string name="income">Income</string>
+    <string name="withdrawal_to">Withdrawal to:</string>
     <string name="withdrawal">Withdrawal</string>
     <string name="value">Value</string>
     <string name="toggle_password_visibility_description">Toggle password visibility</string>
@@ -37,4 +38,5 @@
     <string name="invalid_password_text_field">Password must be at least 6 characters long</string>
     <string name="invalid_card_format">Invalid credit card number format</string>
     <string name="transaction_created">Transaction created successfully</string>
+    <string name="no_transactions">"No transactions registered</string>
 </resources>

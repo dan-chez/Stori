@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.danchez.stori.R
-import com.danchez.stori.ui.home.TransactionType
+import com.danchez.stori.domain.model.TransactionType
 
 @Composable
 fun TransactionTypeSelectorComposable(
@@ -25,7 +25,7 @@ fun TransactionTypeSelectorComposable(
     ) {
         TransactionType.entries.forEach { option ->
             val text = when (option) {
-                TransactionType.DEPOSIT -> stringResource(id = R.string.deposit)
+                TransactionType.INCOME -> stringResource(id = R.string.income)
                 TransactionType.WITHDRAWAL -> stringResource(id = R.string.withdrawal)
             }
             Row(
