@@ -137,10 +137,11 @@ class SignUpViewModel @Inject constructor(
     fun updatePassword(password: String) {
         this.password = password
         checkButtonEnabled()
+        val isPasswordValid = password.length >= 6
         validateConfirmPassword()
         _signUpState.update { currentState ->
             currentState.copy(
-                showPasswordError = password.isEmpty(),
+                showPasswordError = isPasswordValid.not(),
             )
         }
     }

@@ -108,7 +108,7 @@ fun PasswordTextField(
     value: String,
     isError: Boolean = false,
     label: String = stringResource(id = R.string.password),
-    supportingText: String = stringResource(id = R.string.invalid_empty_text_field),
+    supportingText: String = stringResource(id = R.string.invalid_password_text_field),
     imeAction: ImeAction = ImeAction.Done,
     onValueChange: (String) -> Unit,
 ) {

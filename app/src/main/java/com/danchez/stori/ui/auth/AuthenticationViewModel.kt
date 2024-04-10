@@ -44,9 +44,10 @@ class AuthenticationViewModel @Inject constructor(
     fun updatePassword(password: String) {
         this.password = password
         checkButtonEnabled()
+        val isPasswordValid = password.length >= 6
         _authState.update { currentState ->
             currentState.copy(
-                showPasswordError = password.isEmpty(),
+                showPasswordError = isPasswordValid.not(),
             )
         }
     }
