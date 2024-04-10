@@ -13,6 +13,7 @@ data class CreateTransactionUIState(
         data object Initialized : UIState()
         data object Success : UIState()
         data object Failure : UIState()
+        data object FoundsError : UIState()
         data object Loading : UIState()
     }
 }

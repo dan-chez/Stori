@@ -40,6 +40,7 @@ import com.danchez.stori.ui.common.LoadingDialog
 import com.danchez.stori.ui.common.SimpleAlertDialog
 import com.danchez.stori.ui.common.SimpleErrorAlertDialog
 import com.danchez.stori.ui.common.StoriButton
+import com.danchez.stori.ui.home.AccountUIModel
 import com.danchez.stori.ui.theme.StoriTheme
 import com.danchez.stori.ui.theme.spacing
 import com.danchez.stori.utils.rememberImeState
@@ -71,6 +72,7 @@ fun CreateTransactionScreen(
             onTransactionTypeChange = { viewModel.updateTransactionTypeSelected(it) },
             onConfirmationDialogs = { viewModel.hideDialogs() },
             clearFocus = clearFocus,
+            accountUIModel = viewModel.getAccountData(),
             uiState = uiState,
         )
     }
@@ -91,6 +93,7 @@ private fun CreateTransactionContent(
     onTransactionTypeChange: (TransactionType) -> Unit = {},
     onConfirmationDialogs: () -> Unit = {},
     clearFocus: () -> Unit = {},
+    accountUIModel: AccountUIModel? = null,
     uiState: CreateTransactionUIState,
 ) {
     val spacing = MaterialTheme.spacing
@@ -126,9 +129,9 @@ private fun CreateTransactionContent(
         ) {
             Column {
                 Text(text = stringResource(id = R.string.account))
-                Text(text = "1234 5678 9012")
+                Text(text = accountUIModel?.account ?: "-")
             }
-            Text(text = "$2.000.000,00")
+            Text(text = accountUIModel?.totalBalance ?: "$")
         }
         Spacer(modifier = Modifier.height(spacing.large))
         TransactionTypeSelectorComposable(
@@ -180,6 +183,12 @@ private fun CreateTransactionContent(
                 navController = navController,
                 onConfirmation = onConfirmationDialogs,
             )
+
+            CreateTransactionUIState.UIState.FoundsError -> {
+                FoundsErrorDialog(
+                    onConfirmation = onConfirmationDialogs,
+                )
+            }
         }
     }
 }
@@ -196,6 +205,19 @@ private fun TransactionCreatedDialog(
         },
         onConfirmationLabel = stringResource(id = R.string.confirm),
         dialogText = stringResource(id = R.string.transaction_created),
+    )
+}
+
+@Composable
+private fun FoundsErrorDialog(
+    onConfirmation: () -> Unit = {},
+) {
+    SimpleAlertDialog(
+        onConfirmation = {
+            onConfirmation()
+        },
+        onConfirmationLabel = stringResource(id = R.string.confirm),
+        dialogText = stringResource(id = R.string.founds_error),
     )
 }
 

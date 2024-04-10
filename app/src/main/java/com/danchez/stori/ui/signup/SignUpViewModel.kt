@@ -178,7 +178,7 @@ class SignUpViewModel @Inject constructor(
 
     private fun checkButtonEnabled() {
         val isButtonEnabled = (userPhoto != null) && name.isNotBlank() && surname.isNotBlank() &&
-                email.isEmailFormatValid() && password.isNotBlank() && (password == confirmPassword)
+                email.isEmailFormatValid() && password.length >= 6 && (password == confirmPassword)
         _signUpState.update { currentState ->
             currentState.copy(
                 isButtonEnabled = isButtonEnabled

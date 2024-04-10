@@ -17,7 +17,7 @@
     <string name="confirm">Confirm</string>
     <string name="simple_error_dialog_label">"An error occurred. Please try again later.</string>
     <string name="simple_error_dialog_title">"Error</string>
-    <string name="account">Cuenta:</string>
+    <string name="account">Account:</string>
     <string name="total_balance">Total Balance</string>
     <string name="recent_transactions">RECENT TRANSACTIONS</string>
     <string name="make_transaction">MAKE TRANSACTION</string>
@@ -39,4 +39,5 @@
     <string name="invalid_card_format">Invalid credit card number format</string>
     <string name="transaction_created">Transaction created successfully</string>
     <string name="no_transactions">"No transactions registered</string>
+    <string name="founds_error">You don\'t have enough funds to make this withdrawal.</string>
 </resources>
