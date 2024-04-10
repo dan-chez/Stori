@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.danchez.stori.ui.auth.AuthenticationScreen
 import com.danchez.stori.ui.home.HomeScreen
-import com.danchez.stori.ui.home.make_transaction.MakeTransactionScreen
+import com.danchez.stori.ui.create_transaction.CreateTransactionScreen
 import com.danchez.stori.ui.signup.SignUpScreen
 import com.danchez.stori.ui.splash.SplashScreen
 
@@ -29,8 +29,8 @@ fun AppNavigation() {
         composable(AppScreens.HomeScreen.route) {
             HomeScreen(navController = navController)
         }
-        composable(AppScreens.MakeTransactionScreen.route) {
-            MakeTransactionScreen(navController = navController)
+        composable(AppScreens.CreateTransactionScreen.route) {
+            CreateTransactionScreen(navController = navController)
         }
     }
 }

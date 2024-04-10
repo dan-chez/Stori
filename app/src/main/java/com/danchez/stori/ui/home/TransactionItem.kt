@@ -91,7 +91,7 @@ data class TransactionModel(
 )
 
 enum class TransactionType {
-    DEPOSIT, WITHDRAWAL
+    WITHDRAWAL, DEPOSIT
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)

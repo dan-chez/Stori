@@ -1,8 +1,9 @@
 package com.danchez.stori.di
 
-import com.danchez.stori.data.AuthRepository
-import com.danchez.stori.data.AuthRepositoryImpl
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,5 +17,5 @@ class AppModule {
     fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 
     @Provides
-    fun provideAuthRepository(impl: AuthRepositoryImpl): AuthRepository = impl
+    fun provideFirebaseFirestore(): FirebaseFirestore = Firebase.firestore
 }

@@ -35,4 +35,6 @@
     <string name="error_email_format">Invalid email</string>
     <string name="invalid_empty_text_field">Can\'t be empty</string>
     <string name="invalid_password_text_field">Password must be at least 6 characters long</string>
+    <string name="invalid_card_format">Invalid credit card number format</string>
+    <string name="transaction_created">Transaction created successfully</string>
 </resources>

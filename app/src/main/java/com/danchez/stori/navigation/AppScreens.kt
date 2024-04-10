@@ -8,5 +8,5 @@ sealed class AppScreens(val route: String) {
     data object AuthenticationScreen : AppScreens("authentication_screen")
     data object SignUpScreen : AppScreens("sign_up_screen")
     data object HomeScreen : AppScreens("home_screen")
-    data object MakeTransactionScreen : AppScreens("make_transaction_screen")
+    data object CreateTransactionScreen : AppScreens("create_transaction_screen")
 }

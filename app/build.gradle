@@ -66,6 +66,7 @@ dependencies {
     implementation libs.material.icons.extended
     implementation libs.io.coil.compose
     implementation libs.firebase.auth
+    implementation libs.firebase.firestore
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.hilt.compiler)
     testImplementation libs.junit

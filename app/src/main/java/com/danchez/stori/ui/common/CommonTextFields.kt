@@ -25,12 +25,14 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.danchez.stori.R
+import com.danchez.stori.utils.TransformedTextUtils
 
 @Composable
 fun CommonTextField(
     value: String,
     isError: Boolean = false,
     label: String = "",
+    supportingText: String = stringResource(id = R.string.invalid_empty_text_field),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onValueChange: (String) -> Unit,
 ) {
@@ -49,7 +51,7 @@ fun CommonTextField(
             if (isError) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(id = R.string.invalid_empty_text_field),
+                    text = supportingText,
                     color = MaterialTheme.colorScheme.error
                 )
             }
@@ -60,6 +62,41 @@ fun CommonTextField(
         },
         shape = RoundedCornerShape(8.dp),
         keyboardOptions = keyboardOptions,
+    )
+}
+
+@Composable
+fun CardNumberTextField(
+    value: String,
+    isError: Boolean = false,
+    onValueChange: (String) -> Unit,
+) {
+    OutlinedTextField(
+        modifier = Modifier.fillMaxWidth(),
+        value = value,
+        onValueChange = onValueChange,
+        isError = isError,
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Next,
+        ),
+        supportingText = {
+            if (isError) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.invalid_card_format),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        },
+        trailingIcon = {
+            if (isError)
+                TextFieldErrorIcon()
+        },
+        visualTransformation = { number ->
+            TransformedTextUtils.formatCardNumbers(number)
+        },
     )
 }
 
@@ -98,7 +135,7 @@ fun EmailTextField(
             capitalization = KeyboardCapitalization.None,
             autoCorrect = false,
             keyboardType = KeyboardType.Email,
-            imeAction = ImeAction.Next
+            imeAction = ImeAction.Next,
         ),
     )
 }

@@ -130,7 +130,7 @@ private fun HomeContent(
         }
         StoriButton(
             onClick = {
-                navController.navigate(AppScreens.MakeTransactionScreen.route)
+                navController.navigate(AppScreens.CreateTransactionScreen.route)
             },
             modifier = Modifier
                 .constrainAs(buttonRef) {
