@@ -1,6 +1,7 @@
 package com.danchez.stori.data
 
 import android.net.Uri
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -45,6 +46,7 @@ class AuthRepositoryImpl @Inject constructor(
                     .setPhotoUri(photoUri)
                     .build(),
             )?.await()
+            Log.i(TAG, "User registered.")
             Result.success(result.user!!)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -54,5 +56,9 @@ class AuthRepositoryImpl @Inject constructor(
 
     override fun logout() {
         firebaseAuth.signOut()
+    }
+
+    companion object {
+        private const val TAG = "AuthRepository"
     }
 }

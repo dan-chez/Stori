@@ -1,6 +1,8 @@
 package com.danchez.stori.domain.usecases
 
+import com.danchez.stori.data.AccountRepository
 import com.danchez.stori.data.AuthRepository
+import com.danchez.stori.domain.model.AccountModel
 import com.danchez.stori.domain.model.SignUpModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -12,6 +14,7 @@ interface SignUpUseCase {
 
 class SignUpUseCaseImpl @Inject constructor(
     private val repository: AuthRepository,
+    private val accountRepository: AccountRepository,
 ) : SignUpUseCase {
     override suspend fun invoke(model: SignUpModel): Result<Unit> = runCatching {
         withContext(Dispatchers.IO) {
@@ -22,6 +25,8 @@ class SignUpUseCaseImpl @Inject constructor(
                 email = model.email,
                 password = model.password,
             )
+            val initialAccount = AccountModel.createInitialAccount()
+            accountRepository.createAccount(initialAccount)
         }.getOrThrow()
     }
 }
